@@ -2,13 +2,15 @@
 
 Kubernetes Tiller/Helm Release History Cleanup, a script to cleanup old helm tiller history config maps.
 
+See also: https://www.kaper.com/cloud/k8s-tiller-helm-history-cleanup/
+
 This can be handy if you forgot to set TILLER_HISTORY_MAX on your tiller deployment, and added it later on.
 Or... if you remove components using kubectl delete instead of using helm delete (we do remove some namespaces
 automatically, which leaves unused tiller configmaps in the system).
 
 In the script, change the two variables below to match your setup.
 ```
-TILLERNAMESPACE=kube-system
+TILLER_NAMESPACE=kube-system
 TILLER_HISTORY_MAX=5
 ```
 
@@ -33,12 +35,14 @@ Use -n for a dry-run to show what would be deleted
 Use -f to execute a run with actual deletes
 ```
 
-Note: the script also queries the system for ALL components which are tagged with heritage=Tiller,
+Note: the script also queries the system for ALL components which are labeled with heritage=Tiller,
 to find if there is an active helm deploy for a certain release. If not found, the helm history
 will be removed.
 
 Please be carefull, and first execute a dry-run to see if the script will remove the right
 data for your setup.
+
+Note: this script needs a working kubectl command, with active Kubernetes cluster context. It does not need helm.
 
 For reference, the versions of helm/k8s on which we use this:
 ```

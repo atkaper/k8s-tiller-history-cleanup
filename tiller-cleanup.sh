@@ -5,10 +5,10 @@
 # 28/5/2019, Thijs Kaper.
 
 # Change the two variables below to match your setup.
-TILLERNAMESPACE=kube-system
+TILLER_NAMESPACE=kube-system
 TILLER_HISTORY_MAX=5
 
-echo "Settings: TILLERNAMESPACE=${TILLERNAMESPACE}, TILLER_HISTORY_MAX=${TILLER_HISTORY_MAX}"
+echo "Settings: TILLER_NAMESPACE=${TILLER_NAMESPACE}, TILLER_HISTORY_MAX=${TILLER_HISTORY_MAX}"
 
 if [ "$1" != "-f" -a "$1" != "-n" ]
 then
@@ -27,7 +27,7 @@ TMPFILE=/tmp/tiller-map-list-$$.lst
 # get full list of tiller maps, per line: version tiller-name mapname
 # Example line: 2 watchdog-service watchdog-service.v2
 log "get list of tiller maps"
-kubectl --request-timeout=600s -n ${TILLERNAMESPACE} get cm --no-headers -l OWNER=TILLER \
+kubectl --request-timeout=600s -n ${TILLER_NAMESPACE} get cm --no-headers -l OWNER=TILLER \
         -o jsonpath='{range .items[*]}{.metadata.labels.VERSION}{" "}{.metadata.labels.NAME}{" "}{.metadata.name }{"\n"}{end}' | sort -r -n  >$TMPFILE
 if [ "$?" != "0" ]
 then
@@ -80,7 +80,7 @@ do
             deleteCount=$((deleteCount + 1))
             if [ "$1" == "-f" ]
             then
-               kubectl delete -n ${TILLERNAMESPACE} configmap $MAPNAME
+               kubectl delete -n ${TILLER_NAMESPACE} configmap $MAPNAME
             fi
          else
             log "Keep:   $MAPNAME"
