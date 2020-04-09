@@ -46,6 +46,7 @@ log "found $DEPLOYCOUNT tiller deployment names"
 # these are prefixed and postfixed by a # to enable exact match searching using grep later on
 log "get list of active tiller releases"
 kubectl --request-timeout=600s get all,cronjobs --all-namespaces -l heritage=Tiller -L release -o jsonpath='{range .items[*]}{"#"}{.metadata.labels.release}{"#\n"}{end}' | sort -u >$TMPFILE.active
+kubectl --request-timeout=600s get all,cronjobs --all-namespaces -l app.kubernetes.io/managed-by=Tiller -L app.kubernetes.io/instance -o jsonpath='{range .items[*]}{"#"}{.metadata.labels.app\.kubernetes\.io/instance}{"#\n"}{end}'|sort -u >>$TMPFILE.active
 if [ "$?" != "0" ]
 then
    echo "Error?"
