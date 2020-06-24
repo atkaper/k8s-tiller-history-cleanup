@@ -62,5 +62,5 @@ Server Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.1+coreos.0",
 
   * https://github.com/atkaper/k8s-tiller-history-cleanup/issues/2 - a helm chart containing only some configmap or secret loses it's history.
 
-24/7/2020.
+24/6/2020.
 
